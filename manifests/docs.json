@@ -1,0 +1,29 @@
+{
+  "v": 0,
+  "docs": {
+    "введение--документация": {
+      "id": "введение--документация",
+      "name": "Документация",
+      "path": "./src/docs/Introduction.mdx",
+      "title": "Введение",
+      "content": "import { Meta } from '@storybook/addon-docs/blocks';\n\n<Meta title=\"Введение\" />\n\n# DS Mtravel 2.0 для вебвью\n\nReact-компоненты дизайн-системы для вебвью Mtravel внутри приложения MBank. Источник правды по виду — Figma\n[DS - Mtravel 2.0](https://www.figma.com/design/Enj0CUGKB1uJvXiWt7Vu8P/Design-System---Mtravel-2.0), по поведению и анимациям — этот Storybook.\n\n## Как читать\n\n- **Foundations → Токены**: цвета (три уровня), размеры, тени, типографика. Всё сгенерировано из Figma.\n- **Foundations → Motion**: правила и токены анимаций.\n- **Components**: у каждого компонента страница «Документация» (API, состояния, анимация, логика, доступность) и живые stories.\n- Тулбар **Motion**: замедление ×4 и reduced motion, чтобы разбирать анимации.\n- Тулбар **Viewport**: iPhone 393 × 852 и Android 360 × 800.\n\n## Подключение\n\n```tsx\nimport '@mtravel/ui/tokens.css'; // один раз в корне приложения\nimport { Counter } from '@mtravel/ui';\n```\n\nСтек: React 18+, CSS Modules, без runtime-зависимостей. Анимации на CSS transitions и Web Animations API.\n\n## Обновить токены из Figma\n\n1. Выгрузить переменные из Figma в `tokens/figma-export.json` (скрипт выгрузки описан в README).\n2. `npm run tokens`: перегенерирует `src/tokens/generated/*.css` и выведет ошибки в переменных Figma (неверный code syntax, значение не совпадает с названием).\n",
+      "summary": "# DS Mtravel 2.0 для вебвью React-компоненты дизайн-системы для вебвью Mtravel внутри прил..."
+    },
+    "foundations-токены--документация": {
+      "id": "foundations-токены--документация",
+      "name": "Документация",
+      "path": "./src/docs/Tokens.mdx",
+      "title": "Foundations/Токены",
+      "content": "import { Meta } from '@storybook/addon-docs/blocks';\nimport { TokenTable } from './DocTables';\n\n<Meta title=\"Foundations/Токены\" />\n\n# Токены\n\nВсе переменные из Figma «DS - Mtravel 2.0» в трёх уровнях. Компоненты используют только компонентные и семантические токены, примитивы напрямую не трогают.\n\n```\nпримитив               семантика                    компонент\n--color-base-gray-50 → --color-bg-sunken-subtle → --counter-bg-button-disabled\n```\n\nФайлы в `src/tokens/generated/` собирает `npm run tokens` из `tokens/figma-export.json`. Руками их не правим: меняем переменную в Figma, выгружаем заново, перегенерируем.\n\n## 02 · Компоненты\n\n<TokenTable tier=\"component\" />\n\n## 01 · Семантика\n\n<TokenTable tier=\"semantic\" />\n\n## 00 · Примитивы\n\n<TokenTable tier=\"primitive\" />\n\n## Размеры, радиусы, блюр\n\n<TokenTable tier=\"size\" />\n\n## Тени и блюр (Effect styles)\n\n<TokenTable tier=\"effect\" />\n\n## Типографика (Text styles)\n\nКаждый стиль доступен и переменными (`font: var(--font-im-16-b); letter-spacing: var(--tracking-im-16-b)`), и классом `.im-16-b`.\n\n<TokenTable tier=\"typography\" />\n",
+      "summary": "# Токены Все переменные из Figma «DS - Mtravel 2.0» в трёх уровнях. Компоненты используют ..."
+    },
+    "foundations-motion--документация": {
+      "id": "foundations-motion--документация",
+      "name": "Документация",
+      "path": "./src/docs/Motion.mdx",
+      "title": "Foundations/Motion",
+      "content": "import { Meta } from '@storybook/addon-docs/blocks';\nimport { MotionTokens } from './DocTables';\n\n<Meta title=\"Foundations/Motion\" />\n\n# Motion\n\nВ Figma нет переменных для длительности и кривых, поэтому motion-токены живут в коде: `src/tokens/motion.css`. Они устроены так же, как цвета: базовая шкала, а поверх неё токены компонента.\n\n## Правила\n\n1. **Анимировать, только если есть зачем.** Анимация подтверждает нажатие, показывает смену состояния или объясняет, откуда что взялось. Если действие повторяется сотни раз в день, анимации нет.\n2. **Реакция на касание, а не на отпускание.** Обратная связь стартует на `pointerdown` и укладывается в 100–160 мс.\n3. **UI-анимации короче 300 мс.** Уход быстрее появления, отпускание мягче нажатия.\n4. **Ease-out для всего, что запускает пользователь.** `ease-in` не используем: он медленно стартует ровно тогда, когда человек смотрит.\n5. **Двигаем только `transform` и `opacity`.** Они не трогают layout и идут на GPU, что важно в WebView на слабых Android.\n6. **Анимацию можно прервать.** Новое действие посреди анимации стартует с текущего положения на экране: CSS transitions или WAAPI от presentation-значения, без keyframes с нуля.\n7. **Reduced motion — это не отсутствие обратной связи.** Движение меняем на короткую смену прозрачности, цвет и прозрачность оставляем.\n\n## Как пользоваться в коде\n\n```css\n.thing {\n  transition: transform calc(var(--motion-duration-fast) * var(--motion-scale)) var(--motion-ease-out);\n}\n```\n\nДлительности в CSS всегда умножаются на `--motion-scale`, в JS читаются через `readMotion(el)` из `src/lib/motion.ts`. Тогда переключатель **Motion → Замедление ×4** в тулбаре замедляет всё сразу, и анимацию можно разобрать покадрово.\n\n## Токены\n\n<MotionTokens />\n",
+      "summary": "# Motion В Figma нет переменных для длительности и кривых, поэтому motion-токены живут в к..."
+    }
+  }
+}
