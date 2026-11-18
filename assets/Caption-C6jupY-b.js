@@ -1,0 +1,1 @@
+import{j as e}from"./iframe-DuqTOznb.js";const r=({children:o})=>e.jsx("span",{className:"im-12-r",style:{color:"var(--color-text-secondary)"},children:o});r.__docgenInfo={description:"A small grey caption over a variant in a matrix. Only for stories.",methods:[],displayName:"Caption",props:{children:{required:!0,tsType:{name:"ReactNode"},description:""}}};export{r as C};
