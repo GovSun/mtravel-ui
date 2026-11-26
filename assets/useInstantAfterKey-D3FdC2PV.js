@@ -1,0 +1,1 @@
+import{r as e}from"./iframe-DyD5Yel4.js";function f(t){const[n,r]=e.useState(!1),s=e.useRef(t);return e.useEffect(()=>{const a=s.current!==t;if(s.current=t,!n||!a)return;const c=requestAnimationFrame(()=>r(!1));return()=>cancelAnimationFrame(c)},[t,n]),[n,r]}export{f as u};

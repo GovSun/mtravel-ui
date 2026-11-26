@@ -1,0 +1,3 @@
+import{j as o}from"./iframe-DyD5Yel4.js";function r({children:e,style:t}){return o.jsx("div",{style:{maxWidth:"100%",minWidth:0,overflowX:"auto",padding:"12px 4px",...t},children:e})}r.__docgenInfo={description:`Story helper: a state matrix wider than a phone scrolls inside its own box instead of pushing the whole page
+sideways (a centered story already has 16 px body padding around it). The padding keeps the 44 px hit-slop of bare
+controls from being clipped by the scroll box.`,methods:[],displayName:"ScrollMatrix",props:{children:{required:!0,tsType:{name:"ReactNode"},description:""},style:{required:!1,tsType:{name:"CSSProperties"},description:""}}};export{r as S};
